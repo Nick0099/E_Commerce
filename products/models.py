@@ -26,7 +26,7 @@ class Product(models.Model):
     is_active   = models.BooleanField(default=True)
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at  = models.DateTimeField(auto_now=True)
-
+    avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=0)
     def __str__(self):
         return self.name
 
