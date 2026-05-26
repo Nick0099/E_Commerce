@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'django_celery_results',
+    'corsheaders',
 
 ]
 
 MIDDLEWARE = [
+      'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+  
 ]
 
 ROOT_URLCONF = 'e_commerce.urls'
@@ -203,3 +206,8 @@ CELERY_TASK_SERIALIZER = 'json'
 # Email (console backend for development)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@ecommerce.com'
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
