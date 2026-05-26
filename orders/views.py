@@ -7,6 +7,7 @@ from django.db import transaction
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, CheckoutSerializer
 from cart.models import Cart
+from .tasks import send_order_confirmation_email
 
 
 class OrderListView(generics.ListAPIView):
@@ -34,8 +35,10 @@ class CheckoutView(APIView):
         serializer.is_valid(raise_exception=True)
 
         cart    = request.user.cart
-        items   = cart.items.select_related('product').all()
-
+        items = list(
+            cart.items.select_related('product').select_for_update()
+            .all()
+        )
         # validate all items are still in stock
         for item in items:
             if item.quantity > item.product.stock:
@@ -53,7 +56,12 @@ class CheckoutView(APIView):
         if coupon_code:
             from coupons.models import Coupon
             try:
-                coupon   = Coupon.objects.get(code=coupon_code, is_active=True)
+                coupon = Coupon.objects.get(code=coupon_code)
+                if not coupon.is_valid():
+                    return Response(
+                        {'error': 'Invalid or expired coupon'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 discount = coupon.get_discount(total)
                 coupon.times_used += 1
                 coupon.save()
@@ -86,6 +94,11 @@ class CheckoutView(APIView):
 
         # clear cart
         cart.items.all().delete()
+        send_order_confirmation_email(
+            order_id=order.id,
+            user_email=request.user.email,
+            total_price=str(order.get_final_price()),
+        )
 
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
 
@@ -112,3 +125,4 @@ class CancelOrderView(APIView):
         order.status = 'cancelled'
         order.save()
         return Response({'message': 'Order cancelled successfully'})
+  

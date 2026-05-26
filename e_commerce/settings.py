@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
     'django_filters',
+    'django_celery_results',
 
 ]
 
@@ -193,3 +194,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-dev-secret-key-change-in-production')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Email (console backend for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@ecommerce.com'

@@ -33,9 +33,9 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsSellerOrReadOnly]    
 
     def get_serializer_class(self):
-     if self.request.method in ['PUT','PATCH']:
-        return ProductCreateSerializer
-        return ProductSerializer
+     if self.request.method in ['PUT', 'PATCH']:
+         return ProductCreateSerializer
+     return ProductSerializer
      
 class MyProductList(generics.ListAPIView):
     """Seller sees only their own products"""
