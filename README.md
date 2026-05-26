@@ -31,6 +31,8 @@ A production-grade REST API backend for an e-commerce platform built with Django
 ---
 
 ## 📂 Project Structure
+
+```
 ecommerce/
 ├── users/        # Custom user model, JWT auth, profile
 ├── products/     # Products, categories, custom permissions
@@ -40,7 +42,7 @@ ecommerce/
 ├── wishlist/     # Save products for later, toggle add/remove
 ├── coupons/      # Discount codes — percentage or fixed amount
 └── e_commerce/   # Project settings, urls, wsgi
-
+```
 ---
 
 ## 🔑 Key Features
@@ -60,28 +62,31 @@ ecommerce/
 ---
 
 ## 📡 API Endpoints
-POST   /api/auth/register/
-POST   /api/auth/login/
-POST   /api/auth/logout/
-GET    /api/auth/profile/
-GET    /api/products/
-POST   /api/products/create/
-GET    /api/products/<id>/
-GET    /api/products/<id>/reviews/
-POST   /api/products/<id>/reviews/add/
-POST   /api/cart/add/
-GET    /api/cart/
-DELETE /api/cart/
-PUT    /api/cart/<id>/
-DELETE /api/cart/<id>/
-POST   /api/orders/checkout/
-GET    /api/orders/
-GET    /api/orders/<id>/
-POST   /api/orders/<id>/cancel/
-GET    /api/wishlist/
-POST   /api/wishlist/toggle/
-POST   /api/coupons/validate/
-GET    /api/docs/
+
+| Endpoint | Methods | Description |
+|----------|----------|-------------|
+| `/api/auth/register/` | POST | Register a new user |
+| `/api/auth/login/` | POST | Login and obtain authentication token |
+| `/api/auth/logout/` | POST | Logout authenticated user |
+| `/api/auth/profile/` | GET | Retrieve current user profile |
+| `/api/products/` | GET | List all products |
+| `/api/products/create/` | POST | Create a new product (seller only) |
+| `/api/products/<id>/` | GET | Retrieve product details |
+| `/api/products/<id>/reviews/` | GET | List reviews for a product |
+| `/api/products/<id>/reviews/add/` | POST | Add a review to a product |
+| `/api/cart/` | GET | Retrieve cart items |
+| `/api/cart/add/` | POST | Add item to cart |
+| `/api/cart/<id>/` | PUT | Update cart item quantity |
+| `/api/cart/<id>/` | DELETE | Remove item from cart |
+| `/api/cart/` | DELETE | Clear cart |
+| `/api/orders/checkout/` | POST | Create order from cart |
+| `/api/orders/` | GET | List user orders |
+| `/api/orders/<id>/` | GET | Retrieve order details |
+| `/api/orders/<id>/cancel/` | POST | Cancel an order |
+| `/api/wishlist/` | GET | Retrieve wishlist items |
+| `/api/wishlist/toggle/` | POST | Add or remove product from wishlist |
+| `/api/coupons/validate/` | POST | Validate coupon code |
+| `/api/docs/` | GET | API documentation |
 
 ---
 
